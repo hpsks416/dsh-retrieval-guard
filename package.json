@@ -1,7 +1,7 @@
 {
   "name": "dsh-retrieval-guard",
   "version": "0.1.0",
-  "description": "铁律一（先检索）的事前硬门控：拦截「写代码/脚本/skill」和「装依赖」动作，检查本会话是否已调检索工具，没检索就拒绝。",
+  "description": "DSH 插件：写代码/装依赖前，要求本轮已检索（web_search/open-source-scout），未检索弹确认框。",
   "type": "module",
   "main": "lib/index.js",
   "exports": {
