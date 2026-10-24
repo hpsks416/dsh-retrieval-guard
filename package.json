@@ -1,0 +1,23 @@
+{
+  "name": "dsh-retrieval-guard",
+  "version": "0.1.0",
+  "description": "铁律一（先检索）的事前硬门控：拦截「写代码/脚本/skill」和「装依赖」动作，检查本会话是否已调检索工具，没检索就拒绝。",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./cordis.patch.yml": "./cordis.patch.yml"
+  },
+  "files": ["lib", "cordis.patch.yml"],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "compatibility": {
+      "dsh": "^0.1.5-rc.2",
+      "dshReleases": {
+        "0.1.5-rc.2": "compatible"
+      }
+    }
+  }
+}
