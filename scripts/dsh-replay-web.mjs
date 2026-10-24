@@ -2,7 +2,7 @@
 // dsh-replay-web — 可视化引导页 + 点选渲染（基于 dsh-replay，只读不覆盖原日志）
 // 零依赖：node:http / node:fs / node:path / node:child_process / node:os
 import { createServer } from 'node:http';
-import { readdirSync, statSync, existsSync, readFileSync, mkdirSync } from 'node:fs';
+import { readdirSync, statSync, existsSync, readFileSync, mkdirSync, rmSync } from 'node:fs';
 import { join, basename } from 'node:path';
 import { spawn } from 'node:child_process';
 import { homedir } from 'node:os';
@@ -36,8 +36,13 @@ function renderSession(sessionDir, id) {
     mkdirSync(outDir, { recursive: true });
     const j = join(sessionDir, 'session.v3.jsonl.zstd');
     const html = join(outDir, `${id}.html`);
-    // 渲染已有缓存则直接返回，不重复跑
-    if (existsSync(html)) { resolve(html); return; }
+    // 缓存只在「日志未更新」时复用；日志 mtime 比缓存新 → 删旧缓存重新渲染
+    if (existsSync(html) && existsSync(j)) {
+      const htmlTime = statSync(html).mtimeMs;
+      const logTime = statSync(j).mtimeMs;
+      if (htmlTime >= logTime) { resolve(html); return; }
+      rmSync(html, { force: true });
+    }
     const child = spawn('pnpm', ['dlx', 'dsh-replay', '--file', j, '--out', html], { shell: true, stdio: 'ignore' });
     child.on('close', (code) => {
       if (code === 0 && existsSync(html)) resolve(html);
