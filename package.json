@@ -14,9 +14,10 @@
       "patch": "./cordis.patch.yml"
     },
     "compatibility": {
-      "dsh": "^0.1.5-rc.2",
+      "dsh": "^0.1.5-rc.2 || ^0.2.2-rc.1",
       "dshReleases": {
-        "0.1.5-rc.2": "compatible"
+        "0.1.5-rc.2": "compatible",
+        "0.2.2-rc.1": "compatible"
       }
     }
   }
